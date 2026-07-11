@@ -36,7 +36,7 @@ export const login = createAsyncThunk(
       connectSocket(res.data.user?._id);
       toast.success("Logged in successfully");
 
-      return res.data;
+      return res.data.user;
     } catch (error) {
       toast.error(error.response.data.message);
       return thunkAPI.rejectWithValue(error.response.data.message);
@@ -53,7 +53,7 @@ export const signup = createAsyncThunk(
       connectSocket(res.data.user?._id);
       toast.success("Account created successfully");
 
-      return res.data;
+      return res.data.user;
     } catch (error) {
       toast.error(error.response.data.message);
 
