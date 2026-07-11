@@ -94,9 +94,9 @@ export const signin = catchAsyncError(async (req, res, next) => {
 export const signout = catchAsyncError(async (req, res, next) => {
      res.status(200).cookie("token", "", {
             httpOnly: true,
-            sameSite: "strict",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
             maxAge: 0,
-            secure: process.env.NODE_ENV !== "development" ? true : false,
+            secure: process.env.NODE_ENV === "production" ? true : false,
         })
         .json({
             success: true,
