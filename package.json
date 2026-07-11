@@ -1,0 +1,14 @@
+{
+  "name": "talkie-chat-app",
+  "version": "1.0.0",
+  "description": "Talkie — A full-stack real-time chat application",
+  "scripts": {
+    "start": "npm start --prefix backend",
+    "dev": "npm run dev --prefix backend",
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "install:all": "npm install --prefix backend && npm install --prefix frontend"
+  },
+  "keywords": ["chat", "real-time", "socket.io", "mern", "react", "express"],
+  "author": "",
+  "license": "ISC"
+}
