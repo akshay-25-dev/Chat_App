@@ -75,8 +75,8 @@ chat-app/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/talkie-chat-app.git
-cd talkie-chat-app
+git clone https://github.com/akshay-25-dev/Chat_App.git
+cd Chat_App
 ```
 
 ### 2. Install Dependencies
@@ -185,25 +185,42 @@ The app will be available at `http://localhost:3000`.
 
 ## 🌐 Deployment
 
-### Deploy on Render (recommended)
+For production, the best approach is to split hosting to support real-time WebSocket traffic.
 
-1. Push your code to GitHub
-2. Create a new **Web Service** on [Render](https://render.com)
-3. Connect your GitHub repository
-4. Configure:
-   - **Build Command**: `npm run build`
+### Option A: Split Deployment (Recommended)
+- **Frontend**: Deploy on **Vercel** (optimised for static React assets).
+- **Backend**: Deploy on **Render** (provides persistent server for WebSocket/Socket.IO connections).
+
+#### 1. Backend Setup on Render
+1. Create a new **Web Service** on [Render](https://render.com).
+2. Connect your GitHub repository.
+3. Configure the following:
+   - **Root Directory**: `backend`
+   - **Build Command**: `npm install`
    - **Start Command**: `npm start`
-   - **Environment Variables**: Add all variables from `.env.example`
-   - Set `NODE_ENV=production`
-   - Set `FRONTEND_URL` to your Render URL
+4. In the Render dashboard under **Environment Variables**, add:
+   - `NODE_ENV`: `production`
+   - `MONGO_URI`: *Your MongoDB Atlas connection string* (make sure to whitelist `0.0.0.0/0` in your Atlas dashboard)
+   - `FRONTEND_URL`: `https://your-app.vercel.app` (Your Vercel URL, without trailing slash)
+   - `JWT_SECRET_KEY`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`.
 
-### Deploy on Railway
+#### 2. Frontend Setup on Vercel
+1. Create a new **Project** on [Vercel](https://vercel.com).
+2. Connect your GitHub repository.
+3. Configure:
+   - **Root Directory**: `frontend`
+   - **Framework Preset**: `Vite`
+   - **Output Directory**: `dist`
+4. Click **Deploy**. Vercel will automatically configure rewrite rules using the included `vercel.json` to handle client-side routing on reload.
 
-1. Push your code to GitHub
-2. Create a new project on [Railway](https://railway.app)
-3. Connect your GitHub repository
-4. Add environment variables from `.env.example`
-5. Railway auto-detects the `package.json` and runs `npm start`
+---
+
+### Option B: Monolithic Deployment (Single Server)
+If you want to host both frontend and backend on a single service (e.g. Render, Railway):
+
+1. Configure Vite to output to the shared directory: update the build `outDir` in `frontend/vite.config.js` to point to `../.dist`.
+2. Deploy the root folder to **Render** or **Railway**.
+3. Render/Railway will build the frontend and start the Node.js server. The backend will automatically serve the static files in production when `NODE_ENV=production`.
 
 ---
 
