@@ -9,7 +9,7 @@ const AuthImagePattern = ({ title, subtitle }) => {
               return (
                 <div
                   key={i}
-                  className={`w-16 h-16 rounded-2xl bg-gray-700/30 ${
+                  className={`w-20 h-20 rounded-2xl bg-gray-700/30 ${
                     i % 2 === 0 ? "animate-pulse" : "animate-bounce"
                   }`}
                 ></div>
