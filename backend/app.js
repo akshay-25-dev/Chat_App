@@ -8,6 +8,7 @@ import userRoutes from "./routes/user.routes.js";
 import messageRoutes from "./routes/message.routes.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 config({path: "./config/config.env"});
 
@@ -36,12 +37,16 @@ dbConnection();
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/message", messageRoutes);
 
-// Serve frontend in production
-if (process.env.NODE_ENV === "production") {
-    const distPath = path.join(__dirname, "..", ".dist");
+// Serve frontend in production if build exists
+const distPath = path.join(__dirname, "..", ".dist");
+if (process.env.NODE_ENV === "production" && fs.existsSync(distPath)) {
     app.use(express.static(distPath));
     app.get("*all", (req, res) => {
         res.sendFile(path.join(distPath, "index.html"));
+    });
+} else {
+    app.get("/", (req, res) => {
+        res.json({ success: true, message: "Talkie API is running successfully!" });
     });
 }
 
