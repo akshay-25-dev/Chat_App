@@ -4,7 +4,9 @@ let socket = null;
 
 export const connectSocket = (userId) => {
     socket  = io(
-        import.meta.env.MODE === 'development' ? 'http://localhost:3000' : '/',
+        import.meta.env.MODE === 'development' 
+            ? 'http://localhost:3000' 
+            : 'https://chat-app-6s2o.onrender.com',
         {
             query: {
                 userId,
